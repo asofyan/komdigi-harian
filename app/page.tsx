@@ -7,6 +7,8 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import Image from "next/image";
+ 
 type Message = {
   role: "user" | "assistant";
   content: string;
@@ -39,7 +41,7 @@ export default function Home() {
         ...msgs,
         { role: "assistant", content: data.result || "No response." },
       ]);
-    } catch (e) {
+    } catch {
       setMessages((msgs) => [
         ...msgs,
         { role: "assistant", content: "Error contacting API." },
@@ -63,7 +65,7 @@ export default function Home() {
         <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg flex flex-col h-[90vh]">
           {/* Logo & App Name */}
           <div className="flex items-center gap-3 px-6 pt-6 pb-2">
-            <img src="/komdigi.png" alt="Komdigi Logo" className="h-10 w-auto" />
+            <Image src="/komdigi.png" alt="Komdigi Logo" height={40} width={40} className="h-10 w-auto" />
             <span className="text-xl font-bold text-[#005EA4]">Laporan Medsos Harian</span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-4">

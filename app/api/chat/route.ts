@@ -32,11 +32,19 @@ export async function POST(req: NextRequest) {
       "No response.";
 
     return NextResponse.json({ result });
-  } catch (error: any) {
-    const message =
-      error?.response?.data?.error?.message ||
-      error?.message ||
-      JSON.stringify(error);
+  } catch (error: unknown) {
+    let message = "Unknown error";
+    if (typeof error === "object" && error !== null) {
+      if ("response" in error && typeof error.response === "object" && error.response !== null && "data" in error.response && typeof error.response.data === "object" && error.response.data !== null && "error" in error.response.data && typeof error.response.data.error === "object" && error.response.data.error !== null && "message" in error.response.data.error) {
+        message = (error.response.data.error as { message?: string }).message ?? "Unknown error";
+      } else if ("message" in error) {
+        message = (error as { message?: string }).message ?? "Unknown error";
+      } else {
+        message = JSON.stringify(error);
+      }
+    } else if (typeof error === "string") {
+      message = error;
+    }
     return NextResponse.json({ result: message }, { status: 500 });
   }
 }
